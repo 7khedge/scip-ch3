@@ -1,6 +1,6 @@
-(ns scip-ch3.core-test
+(ns sicp-ch3.core-test
   (:require [clojure.test :refer :all]
-            [scip-ch3.core :refer :all]))
+            [sicp-ch3.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
@@ -83,12 +83,54 @@
 
 ;3.2.1 lambda does not exits using fn or #
 (defn squarel []
-        (fn [x] (* x x)))
+  (fn [x] (* x x)))
 
 
 ;3.3
 ;Page 318
 
+;Page 399
+
+(defn stream-car [s]
+  (first s))
+(defn stream-cdr [s]
+  (force (second s)))
+
+;
+;
+
+
+(defn stream-ref [ s n]
+  (if (= n 0)
+    (stream-car s)
+    (stream-ref (stream-cdr s)
+                (- n 1))))
+
+(defn stream-map [proc & argstreams]
+  (lazy-seq
+    (if (empty? (first argstreams)) '()
+                                    (cons
+                                      (apply proc (map first argstreams))
+                                      (apply stream-map (cons proc (map rest argstreams)))))))
+
+
+(defn show [x]
+  (println x) x)
+
+;; Exercise 3.52
+
+(def sum (atom 0))
+
+(defn accum [x]
+  (swap! sum #(+ x %)))
+
+(def stream (map accum (range 1 20))) ; 1
+
+(def y (filter even? stream)) ; 6
+
+(def z (filter #(= (rem % 5) 0) stream)) ; 10
+
+(nth y 7) ; 136
 
 
 

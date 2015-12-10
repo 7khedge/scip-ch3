@@ -1,4 +1,4 @@
-(ns scip-ch3.core)
+(ns sicp-ch3.core)
 
 (defn foo
   "I don't do a whole lot."
